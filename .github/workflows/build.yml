@@ -17,9 +17,11 @@ jobs:
       - name: Unzip and build
         run: |
           unzip -q AppAutomator.zip -d proj
-          cd proj
+          SETTINGS=$(find proj -name settings.gradle.kts | head -1)
+          echo "Project dir: $(dirname "$SETTINGS")"
+          cd "$(dirname "$SETTINGS")"
           gradle assembleDebug --stacktrace
       - uses: actions/upload-artifact@v4
         with:
           name: AppAutomator-debug-apk
-          path: proj/app/build/outputs/apk/debug/*.apk
+          path: proj/**/app/build/outputs/apk/debug/*.apk
